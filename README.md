@@ -1,0 +1,1 @@
+# memfault_logo_anim
