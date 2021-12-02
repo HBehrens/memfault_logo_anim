@@ -19,15 +19,43 @@
   </style>
 </header>
 <body>
-  <svg style="border: 1px solid black; background: pink">
-    <clipPath id="upper_clip" transform="translate(0,0) rotate(45)">
-      <rect />
-    </clipPath>
-    <clipPath id="lower_clip" transform="translate(0,32) rotate(45)">
-        <path id="inverted_clip_rect" fill-rule="evenodd" clip-rule="evenodd" d="M150 -150H-150V150H150V-150ZM-38 -50C-44.6274 -50 -50 -44.6274 -50 -38V38C-50 44.6274 -44.6274 50 -38 50H38C44.6274 50 50 44.6274 50 38V-38C50 -44.6274 44.6274 -50 38 -50H-38Z" fill="#4807FF"/>
+  <svg style="border: 1px solid black; background: pink" width="200" height="200">
+    <defs>
+      <clipPath id="upper_clip" transform="translate(0,0) rotate(45)">
+        <rect />
       </clipPath>
-  
+      <clipPath id="lower_clip" transform="translate(0,32) rotate(45)">
+        <path
+          id="inverted_clip_rect"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M150 -150H-150V150H150V-150ZM-38 -50C-44.6274 -50 -50 -44.6274 -50 -38V38C-50 44.6274 -44.6274 50 -38 50H38C44.6274 50 50 44.6274 50 38V-38C50 -44.6274 44.6274 -50 38 -50H-38Z"
+          fill="#4807FF"
+        />
+      </clipPath>
+      <radialGradient
+        id="gradient_shadow"
+        cx="50%"
+        cy="50%"
+        r="50%"
+        gradientUnits="objectBoundingBox"
+      >
+        <stop stop-opacity="0.32" />
+        <stop offset="1" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
     <g transform="translate(100, 50) scale(1, 0.58)">
+        <ellipse
+        cx="0"
+        cy="130"
+        rx="80"
+        ry="58"
+        fill="url(#gradient_shadow)"
+        style="mix-blend-mode: darken"
+        
+      />
+  
       <g clip-path="url(#lower_clip)">
         <g transform="translate(0, 64) rotate(45)">
           <rect class="col_dark" />
