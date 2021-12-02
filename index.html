@@ -1,30 +1,49 @@
-<header>
-  <style>
-    .col_dark {
-      fill: #39c0ce;
-    }
-    .col_medium {
-      fill: #b0e6eb;
-    }
-    .col_light {
-      fill: #fff;
-    }
-    svg rect {
-      width: 100px;
-      height: 100px;
-      rx: 12px;
-      x: -50px;
-      y: -50px;
-    }
-  </style>
-</header>
+<header></header>
 <body>
-  <svg style="border: 1px solid black; background: pink" width="200" height="200">
+  <svg
+    style="border: 1px solid black; background: pink"
+    width="200"
+    height="200"
+  >
+    <style>
+        :root {
+          --level1_rot: 45deg;
+        }
+        .col_dark {
+          fill: #39c0ce;
+        }
+        .col_medium {
+          fill: #b0e6eb;
+        }
+        .col_light {
+          fill: #fff;
+        }
+        .level1 {
+          transform: translate(0,0) rotate(45deg);
+        }
+        .level2 {
+          transform: translate(0,32px) rotate(45deg);
+        }
+        .level3 {
+          transform: translate(0,64px) rotate(45deg);
+        }
+
+        <!-- to avoid repitition, SVG <use> cannot be used -->
+        rect {
+          width: 100px;
+          height: 100px;
+          x: -50px;
+          y: -50px;
+          <!-- rx not recognized by Safari, so repeated below -->
+      }
+    </style>
+
     <defs>
-      <clipPath id="upper_clip" transform="translate(0,0) rotate(45)">
-        <rect />
+      <clipPath class="level1" id="upper_clip">
+        <rect rx="12" />
       </clipPath>
-      <clipPath id="lower_clip" transform="translate(0,32) rotate(45)">
+      <clipPath id="lower_clip" class="level2">
+        <!-- inverted rounded rectangle since SVG does not support inverted clipping -->
         <path
           id="inverted_clip_rect"
           fill-rule="evenodd"
@@ -46,32 +65,31 @@
     </defs>
 
     <g transform="translate(100, 50) scale(1, 0.58)">
-        <ellipse
+      <ellipse
         cx="0"
         cy="130"
         rx="80"
         ry="58"
         fill="url(#gradient_shadow)"
         style="mix-blend-mode: darken"
-        
       />
-  
+
       <g clip-path="url(#lower_clip)">
-        <g transform="translate(0, 64) rotate(45)">
-          <rect class="col_dark" />
+        <g class="level3">
+          <rect class="col_dark" rx="12" />
         </g>
       </g>
-      <g transform="translate(0, 0) rotate(45)">
-        <rect class="col_dark" />
+      <g class="level1">
+        <rect class="col_dark" rx="12" />
       </g>
       <g clip-path="url(#upper_clip)">
-        <g transform="translate(0, 32) rotate(45)">
-          <rect class="col_medium" />
+        <g class="level2">
+          <rect class="col_medium" rx="12" />
         </g>
       </g>
       <g clip-path="url(#upper_clip)">
-        <g transform="translate(0, 64) rotate(45)">
-          <rect class="col_light" />
+        <g class="level3">
+          <rect class="col_light" rx="12" />
         </g>
       </g>
     </g>
