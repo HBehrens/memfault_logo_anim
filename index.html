@@ -1,5 +1,20 @@
-<header></header>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+</head>
 <body>
+    <script>
+        window.onload = function () {
+            const ease = "power2.inOut";
+            // const ease = "elastic.inOut";
+            const angle = "270deg";
+            const duration = 4;
+            const repeat = -1;
+            const repeatDelay = duration / 2;
+            gsap.to("svg", {"--level1_rot": angle, duration, ease, repeat, repeatDelay});
+            gsap.to("svg", {"--level2_rot": angle, delay: 0.3, duration, ease, repeat, repeatDelay});
+            gsap.to("svg", {"--level3_rot": angle, delay: 0.6, duration, ease, repeat, repeatDelay});
+        }
+    </script>
   <svg
     style="border: 1px solid black; background: pink"
     width="200"
@@ -7,7 +22,19 @@
   >
     <style>
         :root {
-          --level1_rot: 45deg;
+          --level1_rot: 0deg;
+          --level2_rot: 0deg;
+          --level3_rot: 0deg;
+
+          --base_ofs_x: 100px;
+          --base_ofs_y: 50px;
+
+          --y_scale: 0.38;
+          --level_dist: 50px;
+
+          --y_scale: 0.58;
+          --level_dist: 32px;
+          --base_rot: 45deg;
         }
         .col_dark {
           fill: #39c0ce;
@@ -19,13 +46,20 @@
           fill: #fff;
         }
         .level1 {
-          transform: translate(0,0) rotate(45deg);
+          transform: translate(0,0) rotate(calc(var(--level1_rot) + var(--base_rot)));
         }
         .level2 {
-          transform: translate(0,32px) rotate(45deg);
+          transform: translate(0,var(--level_dist)) rotate(calc(var(--level2_rot) + var(--base_rot)));
         }
         .level3 {
-          transform: translate(0,64px) rotate(45deg);
+          transform: translate(0,calc(2*var(--level_dist))) rotate(calc(var(--level3_rot) + var(--base_rot)));
+        }
+        #shadow {
+            transform: translate(var(--base_ofs_x), var(--base_ofs_y));
+        }
+
+        #outer_group {
+            transform: translate(var(--base_ofs_x), var(--base_ofs_y)) scale(1, var(--y_scale));
         }
 
         <!-- to avoid repitition, SVG <use> cannot be used -->
@@ -64,16 +98,17 @@
       </radialGradient>
     </defs>
 
-    <g transform="translate(100, 50) scale(1, 0.58)">
-      <ellipse
-        cx="0"
-        cy="130"
-        rx="80"
-        ry="58"
-        fill="url(#gradient_shadow)"
-        style="mix-blend-mode: darken"
-      />
+    <ellipse
+      id="shadow"
+      cx="0"
+      cy="75"
+      rx="90"
+      ry="30"
+      fill="url(#gradient_shadow)"
+      style="mix-blend-mode: darken"
+    />
 
+    <g id="outer_group">
       <g clip-path="url(#lower_clip)">
         <g class="level3">
           <rect class="col_dark" rx="12" />
