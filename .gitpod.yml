@@ -1,6 +1,7 @@
 tasks:
-  - init: npm install -g browser-sync
-    command: browser-sync start -s -f . --no-notify --host $(gp url|sed 's/https\?:\/\///') --port 9000
+  -  command: >
+      npm install -g browser-sync &&
+      browser-sync start -s -f . --no-notify --host $(gp url|sed 's/https\?:\/\///') --port 9000
 
 ports:
   - port: 9000
