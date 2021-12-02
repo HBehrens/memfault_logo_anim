@@ -1,25 +1,55 @@
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+  <style>
+    svg {
+      border: 1px solid black;
+      background: pink;
+      display: block;
+      position: relative;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
 </head>
 <body>
-    <script>
-        window.onload = function () {
-            const ease = "power2.inOut";
-            // const ease = "elastic.inOut";
-            const angle = "270deg";
-            const duration = 4;
-            const repeat = -1;
-            const repeatDelay = duration / 2;
-            gsap.to("svg", {"--level1_rot": angle, duration, ease, repeat, repeatDelay});
-            gsap.to("svg", {"--level2_rot": angle, delay: 0.3, duration, ease, repeat, repeatDelay});
-            gsap.to("svg", {"--level3_rot": angle, delay: 0.6, duration, ease, repeat, repeatDelay});
-        }
-    </script>
-  <svg
-    style="border: 1px solid black; background: pink"
-    width="200"
-    height="200"
-  >
+  <script>
+    window.onload = function () {
+      const ease = "power2.inOut";
+      // const ease = "elastic.inOut";
+      const angle = "270deg";
+      const duration = 4;
+      const repeat = -1;
+      const repeatDelay = duration / 2;
+      gsap.to("svg", {
+        "--level1_rot": angle,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level2_rot": angle,
+        delay: 0.3,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level3_rot": angle,
+        delay: 0.6,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+    };
+    window.onmousemove = function (e) {
+      console.log(e);
+    };
+  </script>
+  <svg width="200" height="200">
     <style>
         :root {
           --level1_rot: 0deg;
