@@ -21,32 +21,66 @@
       const duration = 4;
       const repeat = -1;
       const repeatDelay = duration / 2;
+    //   gsap.to("svg", {
+    //     "--level1_rot": angle,
+    //     duration,
+    //     ease,
+    //     repeat,
+    //     repeatDelay,
+    //   });
+    //   gsap.to("svg", {
+    //     "--level2_rot": angle,
+    //     delay: 0.3,
+    //     duration,
+    //     ease,
+    //     repeat,
+    //     repeatDelay,
+    //   });
+    //   gsap.to("svg", {
+    //     "--level3_rot": angle,
+    //     delay: 0.6,
+    //     duration,
+    //     ease,
+    //     repeat,
+    //     repeatDelay,
+    //   });
+
       gsap.to("svg", {
-        "--level1_rot": angle,
-        duration,
-        ease,
-        repeat,
-        repeatDelay,
+        "--stack_ofs_y": -10,
+        ease: 'power1.inOut',
+        yoyo: true,
+        duration: 4,
+        repeat: -1,
       });
-      gsap.to("svg", {
-        "--level2_rot": angle,
-        delay: 0.3,
-        duration,
-        ease,
-        repeat,
-        repeatDelay,
+      gsap.to("#shadow", {
+        "opacity": 0.8,
+        ease: 'power1.inOut',
+        yoyo: true,
+        duration: 4,
+        repeat: -1,
       });
-      gsap.to("svg", {
-        "--level3_rot": angle,
-        delay: 0.6,
-        duration,
-        ease,
-        repeat,
-        repeatDelay,
-      });
-    };
-    window.onmousemove = function (e) {
-      console.log(e);
+
+      const svg = document.getElementsByTagName("svg")[0];
+      window.onmousemove = function (e) {
+          const rect = svg.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const deltaX = e.pageX - centerX;
+          const deltaY = e.pageY - centerY;
+          // factors will be -1..+1
+          const factorX = 2 * deltaX / window.innerWidth;
+          const factorY = 2 * deltaY / window.innerHeight;
+
+          // rotation of entire object
+          svg.style.setProperty('--base_rot', `${(45 - factorX*40)}deg`);
+
+          // "perspective" scaling
+          const y_scale = gsap.utils.mapRange(-1, +1, 0.28, 0.80, factorY);
+          svg.style.setProperty('--y_scale', `${y_scale}`);
+          const level_dist = gsap.utils.mapRange(-1, +1, 52, 12, factorY);
+          svg.style.setProperty('--level_dist', `${level_dist}px`);
+          
+      };
     };
   </script>
   <svg width="200" height="200">
@@ -65,6 +99,7 @@
           --y_scale: 0.58;
           --level_dist: 32px;
           --base_rot: 45deg;
+          --stack_ofs_y: 0px;
         }
         .col_dark {
           fill: #39c0ce;
@@ -89,7 +124,7 @@
         }
 
         #outer_group {
-            transform: translate(var(--base_ofs_x), var(--base_ofs_y)) scale(1, var(--y_scale));
+            transform: translate(var(--base_ofs_x), calc(var(--stack_ofs_y) + var(--base_ofs_y))) scale(1, var(--y_scale));
         }
 
         <!-- to avoid repitition, SVG <use> cannot be used -->
