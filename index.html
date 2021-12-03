@@ -42,29 +42,29 @@
       const duration = 4;
       const repeat = -1;
       const repeatDelay = duration / 2;
-      // gsap.to("svg", {
-      //   "--level1_rot": angle,
-      //   duration,
-      //   ease,
-      //   repeat,
-      //   repeatDelay,
-      // });
-      // gsap.to("svg", {
-      //   "--level2_rot": angle,
-      //   delay: 0.3,
-      //   duration,
-      //   ease,
-      //   repeat,
-      //   repeatDelay,
-      // });
-      // gsap.to("svg", {
-      //   "--level3_rot": angle,
-      //   delay: 0.6,
-      //   duration,
-      //   ease,
-      //   repeat,
-      //   repeatDelay,
-      // });
+      gsap.to("svg", {
+        "--level1_rot": angle,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level2_rot": angle,
+        delay: 0.3,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level3_rot": angle,
+        delay: 0.6,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
 
       // ----
       // hover loop
@@ -138,7 +138,7 @@
           
           // reset to default if mouse hasn't moved in a while
           clearTimeout(mouseMoveResetTimer);
-          mouseMoveResetTimer = setTimeout(()=>setTargetPerspective({x:0, y:0}), 1000);
+          mouseMoveResetTimer = setTimeout(()=>setTargetPerspective({x:0, y:0}), 3000);
       };
 
       document.onmouseleave = function(e) {
