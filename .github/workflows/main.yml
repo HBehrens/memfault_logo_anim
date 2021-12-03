@@ -10,10 +10,9 @@ jobs:
         uses: actions/checkout@v2.3.1
 
       - name: copy file 
-        uses: canastro/copy-file-action@master
-        with:
-          source: "index.html"
-          target: "dist/index.html"
+        run: |
+          mkdir dist \
+          cp index.html dist
         
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.7
