@@ -9,8 +9,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
 
+      - name: copy file 
+        uses: canastro/copy-file-action@master
+        with:
+          source: "index.html"
+          target: "dist/index.html"
+        
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: . # The folder the action should deploy.
+          folder: dist # The folder the action should deploy.
