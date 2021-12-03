@@ -1,9 +1,18 @@
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
   <style>
-    svg {
-      border: 1px solid black;
-      background: pink;
+      html {
+          /* background: #eee; */
+          
+      }
+      body {
+        background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        background-size: 40px 40px;
+        background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+      }      
+      svg {
+      /* border: 1px solid black; */
+      /* background: pink; */
       display: block;
       position: relative;
       margin: auto;
@@ -21,29 +30,29 @@
       const duration = 4;
       const repeat = -1;
       const repeatDelay = duration / 2;
-    //   gsap.to("svg", {
-    //     "--level1_rot": angle,
-    //     duration,
-    //     ease,
-    //     repeat,
-    //     repeatDelay,
-    //   });
-    //   gsap.to("svg", {
-    //     "--level2_rot": angle,
-    //     delay: 0.3,
-    //     duration,
-    //     ease,
-    //     repeat,
-    //     repeatDelay,
-    //   });
-    //   gsap.to("svg", {
-    //     "--level3_rot": angle,
-    //     delay: 0.6,
-    //     duration,
-    //     ease,
-    //     repeat,
-    //     repeatDelay,
-    //   });
+      gsap.to("svg", {
+        "--level1_rot": angle,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level2_rot": angle,
+        delay: 0.3,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
+      gsap.to("svg", {
+        "--level3_rot": angle,
+        delay: 0.6,
+        duration,
+        ease,
+        repeat,
+        repeatDelay,
+      });
 
       gsap.to("svg", {
         "--stack_ofs_y": -10,
@@ -61,6 +70,7 @@
       });
 
       const svg = document.getElementsByTagName("svg")[0];
+      
       window.onmousemove = function (e) {
           const rect = svg.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
@@ -75,9 +85,11 @@
           svg.style.setProperty('--base_rot', `${(45 - factorX*40)}deg`);
 
           // "perspective" scaling
-          const y_scale = gsap.utils.mapRange(-1, +1, 0.28, 0.80, factorY);
+          const y_scale_delta = 0.2;
+          const y_scale = gsap.utils.mapRange(-1, +1, 0.58 - y_scale_delta, 0.58 + y_scale_delta, factorY);
           svg.style.setProperty('--y_scale', `${y_scale}`);
-          const level_dist = gsap.utils.mapRange(-1, +1, 52, 12, factorY);
+          const level_dist_delta = 12;
+          const level_dist = gsap.utils.mapRange(-1, +1, 32+level_dist_delta, 32-level_dist_delta, factorY);
           svg.style.setProperty('--level_dist', `${level_dist}px`);
           
       };
@@ -91,7 +103,7 @@
           --level3_rot: 0deg;
 
           --base_ofs_x: 100px;
-          --base_ofs_y: 50px;
+          --base_ofs_y: 80px;
 
           --y_scale: 0.38;
           --level_dist: 50px;
@@ -120,7 +132,7 @@
           transform: translate(0,calc(2*var(--level_dist))) rotate(calc(var(--level3_rot) + var(--base_rot)));
         }
         #shadow {
-            transform: translate(var(--base_ofs_x), var(--base_ofs_y));
+            transform: translate(var(--base_ofs_x), calc(75px + var(--base_ofs_y)));
         }
 
         #outer_group {
@@ -165,8 +177,6 @@
 
     <ellipse
       id="shadow"
-      cx="0"
-      cy="75"
       rx="90"
       ry="30"
       fill="url(#gradient_shadow)"
