@@ -7,7 +7,7 @@ Renders the [Memfault](https://memfault.com) logo and provides some animations a
 
 ![Animated Memfault Logo](https://raw.githubusercontent.com/HBehrens/readme_assets/main/memfault_logo_anim/memfault_logo_anim.gif)
 
-This project was heavily inspired by Gitpod's former loading screen ❤️
+[Try it out now!](https://hbehrens.github.io/memfault_logo_anim/) This project was heavily inspired by Gitpod's former loading screen ❤️
 
 # How does it work
 
@@ -23,6 +23,7 @@ The example further responds to mouse movement to give the illusion of a truly t
 
 # Next Steps
 
-* Clean up [horrible source code](https://github.com/HBehrens/memfault_logo_anim/blob/main/index.html)
-* Re-package as React component to be used in [Memfault's UI](https://docs.memfault.com/docs/platform/charts)
-* Hire awesome talent for [open positions in Berlin/EU](https://mflt.io/careers)
+* [x] Publish to [Github Pages](https://hbehrens.github.io/memfault_logo_anim/)
+* [ ] Clean up [horrible source code](https://github.com/HBehrens/memfault_logo_anim/blob/main/index.html)
+* [ ] Re-package as React component to be used in [Memfault's UI](https://docs.memfault.com/docs/platform/charts)
+* [ ] Hire awesome talent for [open positions in Berlin/EU](https://mflt.io/careers)
