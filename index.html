@@ -1,0 +1,265 @@
+<head>
+  <title>Animated Memfault Logo by @HBehrens – MAD 2021-12-03</title>
+  <!-- 
+    TODO:
+      - convert into react component
+      - integrate GSAP via bundler
+      - clean up various code sections
+   -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+  <style>
+      /* toggle body background between gray and checkerboard */
+      body {
+        background-color: #eee;
+
+        /* https://projects.verou.me/css3patterns/#checkerboard */
+        /* comment out the following lines to have a solid, light-gray background */
+        background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%,white 75%, white),
+          linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);
+        background-size: 60px 60px;
+        background-position: 0 0, 30px 30px;
+      }      
+
+      /* TODO: remove, once converted to react component */
+      svg {
+      /* border: 1px solid black; */
+      /* background: pink; */
+      display: block;
+      position: relative;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      // ----
+      // spinning loop
+      // TODO: use gsap timelines
+      const ease = "power2.inOut";
+      const angle = 270;
+      const duration = 4;
+      const repeat = -1;
+      const repeatDelay = duration / 2;
+      // gsap.to("svg", {
+      //   "--level1_rot": angle,
+      //   duration,
+      //   ease,
+      //   repeat,
+      //   repeatDelay,
+      // });
+      // gsap.to("svg", {
+      //   "--level2_rot": angle,
+      //   delay: 0.3,
+      //   duration,
+      //   ease,
+      //   repeat,
+      //   repeatDelay,
+      // });
+      // gsap.to("svg", {
+      //   "--level3_rot": angle,
+      //   delay: 0.6,
+      //   duration,
+      //   ease,
+      //   repeat,
+      //   repeatDelay,
+      // });
+
+      // ----
+      // hover loop
+      // TODO: replace with gasp timeline
+      gsap.to("svg", {
+        "--stack_ofs_y": -10,
+        ease: 'power1.inOut',
+        yoyo: true,
+        duration: 4,
+        repeat: -1,
+      });
+      gsap.to("#shadow", {
+        "opacity": 0.8,
+        ease: 'power1.inOut',
+        yoyo: true,
+        duration: 4,
+        repeat: -1,
+      });
+
+      const svg = document.getElementsByTagName("svg")[0];
+      let currentPerspective = {x: 0, y: 0};
+      let requestedAnimationFrame = -1;
+
+      // TODO: cleanup!
+      function setCurrentPerspective(p) {
+        currentPerspective = p;
+        const factorX = p.x;
+        const factorY = p.y;
+        // rotation of entire object
+        svg.style.setProperty('--base_rot', `${(45 - factorX*40)}deg`);
+
+        // "perspective" scaling
+        const y_scale_delta = 0.2;
+        const y_scale = gsap.utils.mapRange(-1, +1, 0.58 - y_scale_delta, 0.58 + y_scale_delta, factorY);
+        svg.style.setProperty('--y_scale', `${y_scale}`);
+        const level_dist_delta = 12;
+        const level_dist = gsap.utils.mapRange(-1, +1, 32+level_dist_delta, 32-level_dist_delta, factorY);
+        svg.style.setProperty('--level_dist', `${level_dist}px`);
+      }
+      
+      // TODO: investigate if dampening logic can be expressed with gsap
+      function setTargetPerspective(target) {
+        cancelAnimationFrame(requestedAnimationFrame);
+        const approachTargetPerspective = () => {
+          const epsilon = 0.0001;
+          if (Math.abs(currentPerspective.x-target.x) < epsilon && Math.abs(currentPerspective.y-target.y) < epsilon) {
+            requestedAnimationFrame = -1;
+            return;
+          }
+          const newPerspective = gsap.utils.interpolate(currentPerspective, target, 0.05);
+          setCurrentPerspective(newPerspective);
+
+          requestedAnimationFrame = requestAnimationFrame(approachTargetPerspective);
+        };
+
+        approachTargetPerspective();
+      }
+
+      // TODO: cleanup
+      let mouseMoveResetTimer = -1;
+      document.onmousemove = function (e) {
+          const rect = svg.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const deltaX = e.pageX - centerX;
+          const deltaY = e.pageY - centerY;
+          // factors will be -1..+1
+          const factorX = 2 * deltaX / window.innerWidth;
+          const factorY = 2 * deltaY / window.innerHeight;
+          setTargetPerspective({x:factorX, y:factorY});
+          
+          // reset to default if mouse hasn't moved in a while
+          clearTimeout(mouseMoveResetTimer);
+          mouseMoveResetTimer = setTimeout(()=>setTargetPerspective({x:0, y:0}), 1000);
+      };
+
+      document.onmouseleave = function(e) {
+        setTargetPerspective({x:0, y:0});
+      }
+    };
+  </script>
+</head>
+<body>
+  <div style="position:relative; height:100%;">
+  <svg width="200" height="200">
+    <style>
+        :root {
+          /* additive rotation angle per level */
+          --level1_rot: 0deg;
+          --level2_rot: 0deg;
+          --level3_rot: 0deg;
+
+          /* positioning (incl. shadow) and rotation of entire object within SVG */
+          --base_ofs_x: 100px;
+          --base_ofs_y: 80px;
+          --base_rot: 45deg;
+
+          /* vertical scaling + distance between levels for fake perspective */
+          --y_scale: 0.58;
+          --level_dist: 32px;
+
+          /* additive positioning of stacked layers (excl. shadow) for hover */
+          --stack_ofs_y: 0px;
+        }
+
+        .col_dark {
+          fill: #39c0ce;
+        }
+        .col_medium {
+          fill: #b0e6eb;
+        }
+        .col_light {
+          fill: #fff;
+        }
+        .level1 {
+          transform: translate(0,0) rotate(calc(var(--level1_rot) + var(--base_rot)));
+        }
+        .level2 {
+          transform: translate(0,var(--level_dist)) rotate(calc(var(--level2_rot) + var(--base_rot)));
+        }
+        .level3 {
+          transform: translate(0,calc(2*var(--level_dist))) rotate(calc(var(--level3_rot) + var(--base_rot)));
+        }
+        #shadow {
+            transform: translate(var(--base_ofs_x), calc(75px + var(--base_ofs_y)));
+        }
+
+        #stack_group {
+            transform: translate(var(--base_ofs_x), calc(var(--stack_ofs_y) + var(--base_ofs_y))) scale(1, var(--y_scale));
+        }
+
+        <!-- to avoid repitition, SVG <use> cannot be used -->
+        rect {
+          width: 100px;
+          height: 100px;
+          x: -50px;
+          y: -50px;
+          <!-- rx not recognized by Safari, so repeated below -->
+      }
+    </style>
+
+    <defs>
+      <clipPath class="level1" id="upper_clip">
+        <rect rx="12" />
+      </clipPath>
+      <clipPath id="lower_clip" class="level2">
+        <!-- path describing "outside" of a rounded rectangle to overcome SVG limitation for clipping  -->
+        <path
+          id="inverted_clip_rect"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M150 -150H-150V150H150V-150ZM-38 -50C-44.6274 -50 -50 -44.6274 -50 -38V38C-50 44.6274 -44.6274 50 -38 50H38C44.6274 50 50 44.6274 50 38V-38C50 -44.6274 44.6274 -50 38 -50H-38Z"
+          fill="#4807FF"
+        />
+      </clipPath>
+      <radialGradient
+        id="gradient_shadow"
+        cx="50%"
+        cy="50%"
+        r="50%"
+        gradientUnits="objectBoundingBox"
+      >
+        <stop stop-opacity="0.32" />
+        <stop offset="1" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <ellipse
+      id="shadow"
+      rx="90"
+      ry="30"
+      fill="url(#gradient_shadow)"
+      style="mix-blend-mode: darken"
+    />
+
+    <g id="stack_group">
+      <g clip-path="url(#lower_clip)">
+        <g class="level3">
+          <rect class="col_dark" rx="12" />
+        </g>
+      </g>
+      <g class="level1">
+        <rect class="col_dark" rx="12" />
+      </g>
+      <g clip-path="url(#upper_clip)">
+        <g class="level2">
+          <rect class="col_medium" rx="12" />
+        </g>
+      </g>
+      <g clip-path="url(#upper_clip)">
+        <g class="level3">
+          <rect class="col_light" rx="12" />
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
+</body>
