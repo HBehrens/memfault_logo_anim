@@ -11,7 +11,7 @@ jobs:
 
       - name: copy file 
         run: |
-          mkdir dist \
+          mkdir dist
           cp index.html dist
         
       - name: Deploy 🚀
