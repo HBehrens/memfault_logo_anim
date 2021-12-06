@@ -14,12 +14,12 @@ Renders the [Memfault](https://memfault.com) logo and provides some animations a
 The logo is technically a 2D SVG with several nested groups each with individually configured CSS transforms.
 Careful placement of SVG clipping paths that are transformed in sync creates the desired effect.
 
-JavaScript performs logic and drives changes values for various CSS variables using [GreenSock](https://greensock.com/gsap/).
+JavaScript performs logic and drives value changes for various CSS variables using [GreenSock](https://greensock.com/gsap/).
 Various `calc()` expressions in the CSS will apply these variables leading to the visual effects without making any changes to SVG itself.
 
 ![Fake perspective triggered by mouse movement](https://raw.githubusercontent.com/HBehrens/readme_assets/main/memfault_logo_anim/memfault_logo_anim_mouse.gif)
 
-The example further responds to mouse movement to give the illusion of a truly three-dimensional object.
+The example further responds to pointer events (touch or mouse) to give the illusion of a truly three-dimensional object.
 
 # Next Steps
 
