@@ -19,10 +19,10 @@
 
         /* https://projects.verou.me/css3patterns/#checkerboard */
         /* comment out the following lines to have a solid, light-gray background */
-        background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%,white 75%, white),
+        /* background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%,white 75%, white),
           linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);
         background-size: 60px 60px;
-        background-position: 0 0, 30px 30px;
+        background-position: 0 0, 30px 30px; */
       }      
 
       /* TODO: remove, once converted to react component */
@@ -46,14 +46,16 @@
       const duration = 4;
       const repeat = -1;
       const repeatDelay = duration / 2;
-      gsap.to("svg", {
+
+      const elemWithCssVars = document.getElementById("container_div");
+      gsap.to(elemWithCssVars, {
         "--level1_rot": angle,
         duration,
         ease,
         repeat,
         repeatDelay,
       });
-      gsap.to("svg", {
+      gsap.to(elemWithCssVars, {
         "--level2_rot": angle,
         delay: 0.3,
         duration,
@@ -61,7 +63,7 @@
         repeat,
         repeatDelay,
       });
-      gsap.to("svg", {
+      gsap.to(elemWithCssVars, {
         "--level3_rot": angle,
         delay: 0.6,
         duration,
@@ -73,22 +75,21 @@
       // ----
       // hover loop
       // TODO: replace with gasp timeline
-      gsap.to("svg", {
+      gsap.to(elemWithCssVars, {
         "--stack_ofs_y": -10,
         ease: 'power1.inOut',
         yoyo: true,
         duration: 4,
         repeat: -1,
       });
-      gsap.to("#shadow", {
-        "opacity": 0.8,
+      gsap.to(elemWithCssVars, {
+        "--shadow-opacity": 0.8,
         ease: 'power1.inOut',
         yoyo: true,
         duration: 4,
         repeat: -1,
       });
 
-      const svg = document.getElementsByTagName("svg")[0];
       let currentPerspective = {x: 0, y: 0};
       let requestedAnimationFrame = -1;
 
@@ -98,15 +99,15 @@
         const factorX = p.x;
         const factorY = p.y;
         // rotation of entire object
-        svg.style.setProperty('--base_rot', `${(45 - factorX*40)}deg`);
+        elemWithCssVars.style.setProperty('--base_rot', `${(45 - factorX*40)}deg`);
 
         // "perspective" scaling
         const y_scale_delta = 0.2;
         const y_scale = gsap.utils.mapRange(-1, +1, 0.58 - y_scale_delta, 0.58 + y_scale_delta, factorY);
-        svg.style.setProperty('--y_scale', `${y_scale}`);
+        elemWithCssVars.style.setProperty('--y_scale', `${y_scale}`);
         const level_dist_delta = 12;
         const level_dist = gsap.utils.mapRange(-1, +1, 32+level_dist_delta, 32-level_dist_delta, factorY);
-        svg.style.setProperty('--level_dist', `${level_dist}px`);
+        elemWithCssVars.style.setProperty('--level_dist', `${level_dist}px`);
       }
       
       // TODO: investigate if dampening logic can be expressed with gsap
@@ -128,6 +129,7 @@
       }
 
       // TODO: cleanup
+      const svg = document.getElementsByTagName("svg")[0];
       let mouseMoveResetTimer = -1;
       document.onpointermove = function (e) {
           const rect = svg.getBoundingClientRect();
@@ -152,7 +154,7 @@
   </script>
 </head>
 <body>
-  <div style="position:relative; height:100vh;">
+  <div id="container_div" style="position:relative; height:100vh;">
   <svg width="200" height="200">
     <style>
         :root {
@@ -172,6 +174,8 @@
 
           /* additive positioning of stacked layers (excl. shadow) for hover */
           --stack_ofs_y: 0px;
+
+          --shadow-opacity: 1.0;
         }
 
         .col_dark {
@@ -241,7 +245,7 @@
       rx="90"
       ry="30"
       fill="url(#gradient_shadow)"
-      style="mix-blend-mode: darken"
+      style="mix-blend-mode: darken;opacity: var(--shadow-opacity);"
     />
 
     <g id="stack_group">
