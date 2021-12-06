@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>Animated Memfault Logo by @HBehrens – MAD 2021-12-03</title>
   <!-- 
@@ -6,11 +8,13 @@
       - integrate GSAP via bundler
       - clean up various code sections
    -->
-
+   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
   <style>
       /* toggle body background between gray and checkerboard */
       body {
+        overflow: hidden;
+        margin: 0;
         background-color: #eee;
 
         /* https://projects.verou.me/css3patterns/#checkerboard */
@@ -125,7 +129,7 @@
 
       // TODO: cleanup
       let mouseMoveResetTimer = -1;
-      document.onmousemove = function (e) {
+      document.onpointermove = function (e) {
           const rect = svg.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
           const centerY = rect.top + rect.height / 2;
@@ -141,14 +145,14 @@
           mouseMoveResetTimer = setTimeout(()=>setTargetPerspective({x:0, y:0}), 3000);
       };
 
-      document.onmouseleave = function(e) {
+      document.onmouseleave = document.ontouchend = function(e) {
         setTargetPerspective({x:0, y:0});
       }
     };
   </script>
 </head>
 <body>
-  <div style="position:relative; height:100%;">
+  <div style="position:relative; height:100vh;">
   <svg width="200" height="200">
     <style>
         :root {
@@ -263,3 +267,4 @@
   </svg>
 </div>
 </body>
+</html>
